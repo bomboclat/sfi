@@ -121,12 +121,13 @@ find_string(const char *buffer, const char *to_find) {
 
 char *
 copy_chunk(const char *start, const char *end) {
-	char *buffer = NULL;
-	size_t blen = end - start;
+	char *buffer;
+	size_t blen = end - start,
+	       bsize = blen/BUFSIZ * BUFSIZ + BUFSIZ;
 	if (blen > 0) {
 		/* copy the string chunk */
-		buffer = erecalloc(buffer, blen);
-		memcpy(buffer, start, blen * sizeof(char));
+		buffer = erecalloc(NULL, bsize);
+		memcpy(buffer, start, blen);
 		buffer[blen] = '\0';
 		return buffer;
 	}
