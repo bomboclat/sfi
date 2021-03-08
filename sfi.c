@@ -20,7 +20,7 @@
 #include <string.h>
 
 #ifndef VERSION
-#define VERSION "\"No version information\""
+#define VERSION "`No version information`"
 #endif
 #define LENGTH(x) sizeof(x)/sizeof(x[0])
 
