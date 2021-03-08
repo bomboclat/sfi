@@ -24,8 +24,15 @@
 #endif
 #define LENGTH(x) sizeof(x)/sizeof(x[0])
 
-typedef const char * (*Parser)(const char *start, const char *end, int);
+typedef const char * (*Parser)(const char *, const char *, int);
 
+static void eprintf(const char *format, ...);
+static void print_chunk(const char *start, const char *end);
+static void process_import(const char *buffer);
+static void * erecalloc(void *p, size_t size);
+static char * read_file(const char *file);
+static char * copy_chunk(const char *start, const char *end);
+static const char * find_string(const char *buffer, const char *to_find);
 static const char * doreplace(const char *start, const char *end, int newchunk);
 
 static const char *wrappers[2] = { "{{", "}}" };
