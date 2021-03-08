@@ -35,8 +35,8 @@ clean:
 dist: clean
 	@echo creating dist tarball
 	@mkdir -p sfi-${VERSION}
-	@cp -R LICENSE Makefile config.mk sfi.1 ${SRC} sfi-${VERSION}
-	@tar -zcf sfi-${VERSION}.tar sfi-${VERSION}
+	@cp -R LICENSE Makefile sfi.1 ${SRC} sfi-${VERSION}
+	@tar -zcf sfi-${VERSION}.tar.gz sfi-${VERSION}
 	@rm -rf sfi-${VERSION}
 
 install: all
