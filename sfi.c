@@ -26,14 +26,14 @@
 
 typedef const char * (*Parser)(const char *, const char *, int);
 
-static void eprintf(const char *format, ...);
-static void print_chunk(const char *start, const char *end);
-static void process_import(const char *buffer);
-static void * erecalloc(void *p, size_t size);
+static void eprintf(const char *format, ...);					/* print formatted err str and exit(1) */
+static void print_chunk(const char *start, const char *end);			/* print the string chunk */
+static void process_import(const char *buffer);					/* recursive file importing and processing */
+static void * erecalloc(void *p, size_t size);					/* calloc or realloc if void *p is not NULL */
 static char * read_file(const char *file);
-static char * copy_chunk(const char *start, const char *end);
+static char * copy_chunk(const char *start, const char *end);			/* copy in new buffer the passed chunk */
 static const char * find_string(const char *buffer, const char *to_find);
-static const char * doreplace(const char *start, const char *end, int newchunk);
+static const char * doreplace(const char *start, const char *end, int newchunk);/* do a simple string replace */
 
 static const char *wrappers[2] = { "{{", "}}" };
 static const char *replace[][2] = {
