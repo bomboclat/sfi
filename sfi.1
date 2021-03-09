@@ -7,9 +7,21 @@ sfi \- simple file importer
 .RB [ \-v ]
 .RB [ file ]
 .SH DESCRIPTION
-Sfi is a simple and minimal template engine written with very few lines of C code.
+Sfi is a simple, fast and minimal template engine inspired from https://github.com/Gottox/smu 
+and written with very few lines of C code.
 The original goal of this tool is to generate static pages from little templates.
-Sfi is able to import files in files and print them as a unique output to the stdout.
+Sfi is able to import files recursively and print them as a unique output to the stdout.
+
+.in +4n
+{{/path/to/file_to_import}}
+.in
+
+To import a file in a template with sfi you must add 
+.I {{ 
+before and 
+.I }}
+after the 
+name of the file to import.
 .SH OPTIONS
 .TP
 .B \-v
@@ -17,5 +29,37 @@ prints version information to standard output, then exits.
 .TP
 .B \-h
 prints usage information to standard output, then exits.
+.TP
+.B file
+template file
+.SH EXAMPLES
+Usage example:
+
+.in +4n
+sfi
+.I templatename
+> result
+.in
+
+You can also pass the template from stdin, for example:
+
+.in +4n
+cat
+.I templatename
+| sfi > result
+.in
+
+For exeample to print compiled index.html:
+
+.in +4n
+.nf
+cd examples
+sfi index.html
+.fi
+.in
+
+You can find other template examples in 
+.B examples
+dir.
 .SH BUGS
 Please report any Bugs to https://github.com/bomboclat/sfi/issues or via mail.
