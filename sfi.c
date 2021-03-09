@@ -122,7 +122,7 @@ find_string(const char *buffer, const char *to_find) {
 char *
 copy_chunk(const char *start, const char *end) {
 	char *buffer;
-	size_t blen = end - start,
+	size_t blen = (end - start) * sizeof(char),
 	       bsize = blen/BUFSIZ * BUFSIZ + BUFSIZ;
 	if (blen > 0) {
 		/* copy the string chunk */
