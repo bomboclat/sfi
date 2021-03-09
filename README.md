@@ -2,7 +2,7 @@
 
 Sfi is a simple, fast and minimal template engine inspired from [Smu](https://github.com/Gottox/smu) 
 and written with very few lines of C code.
-The original goal of this tool is to generate static pages from little templates.
+The original goal of this tool is to generate static web pages from little templates.
 Sfi is able to import files recursively and print them as a unique output to the stdout.
 
 To import a file in a template with sfi you must add `{{` before and `}}` after the 
