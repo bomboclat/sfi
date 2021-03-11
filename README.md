@@ -18,37 +18,37 @@ name of the file to import.
 	
 example:
 	
-	~$ sfi [templatename] > result
+	sfi [templatename] > result
 
 You can also pass the template from stdin, for example:
 	
-	~$ cat [templatename] | sfi > result
+	cat [templatename] | sfi > result
 
 For exeample to print compiled index.html:
 
-	~$ cd examples
-	~$ sfi index.html
+	cd examples
+	sfi index.html
 
 You can find other template examples in `examples` dir.
 
 ## Build and install
 To compile:
 
-	~$ make
+	make
 
 To install:
 
-	~$ make install
+	make install
 	
 You can edit the `$DESTDIR` variable to install all files on specific directory:
 
-	~$ mkdir destdir
-	~$ DESTDIR=destdir make install
+	mkdir destdir
+	DESTDIR=destdir make install
 	
 To uninstall:
 	
-	~$ make uninstall
+	make uninstall
 	
 or
 
-	~$ DESTDIR=destdir make uninstall
+	DESTDIR=destdir make uninstall
