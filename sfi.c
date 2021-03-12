@@ -14,10 +14,12 @@
  * ==================================================
  */
 #include <errno.h>
+#include <libgen.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #ifndef VERSION
 #define VERSION "`No version information`"
@@ -122,8 +124,15 @@ find_string(const char *buffer, const char *to_find) {
 char *
 copy_chunk(const char *start, const char *end) {
 	char *buffer;
-	size_t blen = (end - start) * sizeof(char),
-	       bsize = blen/BUFSIZ * BUFSIZ + BUFSIZ;
+	size_t blen, bsize;
+
+	if (!start)
+		return NULL;
+	if (!end)
+		end = start + strlen(start);
+
+	blen = (end - start) * sizeof(char),
+	bsize = blen/BUFSIZ * BUFSIZ + BUFSIZ;
 	if (blen > 0) {
 		/* copy the string chunk */
 		buffer = erecalloc(NULL, bsize);
@@ -142,6 +151,19 @@ print_chunk(const char *start, const char *end) {
 		fputs(buffer, stdout);
 		free(buffer);
 	}
+}
+
+void
+cd(const char *path, int strip_last) {
+	char *path_cp;
+
+	if (strip_last) {
+		path_cp = copy_chunk(path, NULL);
+		path = dirname(path_cp);
+		free(path_cp);
+	}
+	if (chdir(path))
+		eprintf("Error changing directory to: `%s`", path);
 }
 
 const char *
@@ -168,7 +190,7 @@ doreplace(const char *start, const char *end, int newchunk) {
 void
 process_import(const char *buffer) {
 	const char *start = buffer, *end = NULL, *found, *cursor;
-	char *file, *filename;
+	char *file, *filename, *cwd;
 	int i, j;
 	Parser cur_parser;
 	for (i = 0; *start != '\0'; i++) {
@@ -181,8 +203,12 @@ process_import(const char *buffer) {
 			start += strlen(wrappers[(i - 1) % 2]);
 			filename = copy_chunk(start, end);
 			file = read_file(filename);
+			cwd = getcwd(NULL, 0);
+			cd(filename, 1);
 			/* recursion here!! */
 			process_import(file);
+			cd(cwd, 0);
+			free(cwd);
 			free(filename);
 			free(file);
 			/* skip current wrapper from end */
@@ -214,9 +240,8 @@ process_import(const char *buffer) {
 int
 main(int argc, char *argv[]) {
 	int i;
-        char *program_name = argv[0];
-	char *filename = NULL;
-	
+        char *program_name = argv[0], *filename = NULL, *buffer;
+
 	/* filter arguments */
 	for(i=1; i < argc; i++) {
 		if (!strcmp("-v", argv[i])) {
@@ -236,6 +261,8 @@ main(int argc, char *argv[]) {
 			eprintf("\nInvalid parameter: %s\n", argv[i]);
 		}
 	}
-	process_import(read_file(filename));
+	buffer = read_file(filename);
+	cd(filename, 1);
+	process_import(buffer);
 	return EXIT_SUCCESS;
 }
