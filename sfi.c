@@ -55,7 +55,7 @@ usage() {
 void
 eprintf(const char *format, ...) {
 	va_list ap;
-	
+
 	va_start(ap, format);
 	vfprintf(stderr, format, ap);
 	va_end(ap);
@@ -241,7 +241,7 @@ process_import(const char *buffer) {
 int
 main(int argc, char *argv[]) {
 	int i;
-        char *program_name = argv[0], *filename = NULL, *buffer;
+	char *program_name = argv[0], *filename = NULL, *buffer;
 
 	/* filter arguments */
 	for(i=1; i < argc; i++) {
