@@ -16,18 +16,18 @@ name of the file to import.
 	-v      print the version and exit
 	-h      print this help and exit
 	
-example:
-	
-	sfi [templatename] > result
+quick and dirty:
+
+	git clone https://github.com/bomboclat/sfi.git
+	cd sfi
+	make
+	./sfi examples/index.html > result
+	cat result
+	rm result
 
 You can also pass the template from stdin, for example:
 	
-	cat [templatename] | sfi > result
-
-For exeample to print compiled index.html:
-
-	cd examples
-	sfi index.html
+	cat [templatefile] | sfi > result
 
 You can find other template examples in `examples` dir.
 
