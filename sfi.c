@@ -30,6 +30,7 @@ typedef const char * (*Parser)(const char *, const char *, int);
 
 static void eprintf(const char *format, ...);					/* print formatted err str and exit(1) */
 static void print_chunk(const char *start, const char *end);			/* print the string chunk */
+static void cd(const char *path, int strip_last);				/* cd into path. optionally strip last path component */
 static void process_import(const char *buffer);					/* recursive file importing and processing */
 static void * erecalloc(void *p, size_t size);					/* calloc or realloc if void *p is not NULL */
 static char * read_file(const char *file);
