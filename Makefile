@@ -1,7 +1,7 @@
 # libsfi
 # (c) 2021, 2022 Andrea Galletti
 
-VERSION = 1.0
+VERSION = 1.2
 # paths
 PREFIX = /usr/local
 MANPREFIX = ${PREFIX}/share/man
