@@ -37,6 +37,7 @@ static char * read_file(const char *file);
 static char * copy_chunk(const char *start, const char *end);			/* copy in new buffer the passed chunk */
 static const char * find_string(const char *buffer, const char *to_find);
 static const char * doreplace(const char *start, const char *end, int newchunk);/* do a simple string replace */
+static const char * usage();
 
 static const char *wrappers[2] = { "{{", "}}" };
 static const char *replace[][2] = {
@@ -45,7 +46,7 @@ static const char *replace[][2] = {
 };
 static const Parser parsers[] = { doreplace };
 
-char *
+const char *
 usage() {
 	return "Usage %s [OPTION] [file]\n"
 		"-v	print the version and exit\n"
