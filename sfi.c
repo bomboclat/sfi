@@ -25,12 +25,12 @@
 #define VERSION "`No version information`"
 #endif
 #define LENGTH(x) sizeof(x)/sizeof(x[0])
+#define CD(path) if (chdir(path)) eprintf("Error changing directory to: `%s`", path);
 
 typedef const char * (*Parser)(const char *, const char *, int);
 
 static void eprintf(const char *format, ...);					/* print formatted err str and exit(1) */
 static void print_chunk(const char *start, const char *end);			/* print the string chunk */
-static void cd(const char *path, int strip_last);				/* cd into path. optionally strip last path component */
 static void process_import(const char *buffer);					/* recursive file importing and processing */
 static void * erecalloc(void *p, size_t size);					/* calloc or realloc if void *p is not NULL */
 static char * read_file(const char *file);
@@ -155,19 +155,6 @@ print_chunk(const char *start, const char *end) {
 	}
 }
 
-void
-cd(const char *path, int strip_last) {
-	char *path_cp;
-
-	if (strip_last) {
-		path_cp = copy_chunk(path, NULL);
-		path = dirname(path_cp);
-		free(path_cp);
-	}
-	if (chdir(path))
-		eprintf("Error changing directory to: `%s`", path);
-}
-
 const char *
 doreplace(const char *start, const char *end, int newchunk) {
 	const char *found = NULL, *cursor = NULL;
@@ -190,31 +177,35 @@ doreplace(const char *start, const char *end, int newchunk) {
 }
 
 void
-process_import(const char *buffer) {
-	const char *start = buffer, *end = NULL, *found, *cursor;
+process_import(const char *start) {
+	const char *end = NULL, *wrapper = NULL, *found, *cursor;
 	char *file, *filename, *cwd;
 	int i, j;
 	Parser cur_parser;
-	for (i = 0; *start != '\0'; i++) {
+	for (i = 0; start && *start != '\0'; i++) {
 		end = find_string(start, wrappers[i % 2]);
 		if (!end) {
 			end = start + strlen(start);
 		}
-		else if (start != buffer && i % 2 > 0) {
+		else if (wrapper && strcmp(wrapper, wrappers[(i - 1) % 2])) {
 			/* skip previous wrapper from start*/
 			start += strlen(wrappers[(i - 1) % 2]);
 			filename = copy_chunk(start, end);
 			file = read_file(filename);
 			cwd = getcwd(NULL, 0);
-			cd(filename, 1);
+			CD(dirname(filename));
 			/* recursion here!! */
 			process_import(file);
-			cd(cwd, 0);
+			CD(cwd);
 			free(cwd);
 			free(filename);
 			free(file);
 			/* skip current wrapper from end */
 			start = end += strlen(wrappers[i % 2]);
+			wrapper = NULL;
+		}
+		else {
+			wrapper = end;
 		}
 
 		do {
@@ -264,7 +255,7 @@ main(int argc, char *argv[]) {
 		}
 	}
 	buffer = read_file(filename);
-	cd(filename, 1);
+	CD(dirname(filename));
 	process_import(buffer);
 	return EXIT_SUCCESS;
 }
