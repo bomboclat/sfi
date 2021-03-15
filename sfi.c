@@ -191,7 +191,11 @@ process_import(const char *start) {
 			/* skip previous wrapper from start*/
 			start += strlen(wrappers[(i - 1) % 2]);
 			filename = copy_chunk(start, end);
-			file = read_file(filename);
+			/* if the import is {{...}}, parse from stdin */
+			if (!strcmp(filename, "..."))
+				file = read_file(NULL);
+			else
+				file = read_file(filename);
 			cwd = getcwd(NULL, 0);
 			CD(dirname(filename));
 			/* recursion here!! */
