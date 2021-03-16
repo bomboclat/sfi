@@ -12,16 +12,23 @@ and written with very few lines of C code.
 The original goal of this tool is to generate static web pages from little templates.
 Sfi is able to import files recursively and print them as a unique output to the stdout.
 
-.in +4n
-{{/path/to/file_to_import}}
-.in
-
 To import a file in a template with sfi you must add 
 .I {{ 
 before and 
 .I }}
 after the 
 name of the file to import.
+
+.in +4n
+{{/path/to/file_to_import}}
+.in
+
+You can also import data from stdin with:
+
+.in +4n
+{{...}}
+.in
+
 .SH OPTIONS
 .TP
 .B \-v
@@ -56,6 +63,16 @@ For exeample to print compiled index.html:
 cd examples
 sfi index.html
 .fi
+.in
+
+Also values can be passed through stdin (using
+.I {{...}}
+in template file):
+
+.in +4n
+printf "this is a string value" | sfi
+.I templatename
+> result
 .in
 
 You can find other template examples in 

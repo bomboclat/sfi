@@ -10,6 +10,10 @@ name of the file to import.
 
 	{{/path/to/file_to_import}}
 
+you can also import data from stdin with:
+
+	{{...}}
+
 ## Usage
 	
 	sfi [OPTION] [file]
@@ -28,6 +32,10 @@ quick and dirty:
 You can also pass the template from stdin, for example:
 	
 	cat [templatefile] | sfi > result
+
+Also values can be passed through stdin (using `{{...}}` in template file):
+
+	printf "this is a string value" | sfi templatename > result
 
 You can find other template examples in `examples` dir.
 
