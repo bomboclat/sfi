@@ -162,7 +162,7 @@ doreplace(const char *start, const char *end, int newchunk) {
 
 	for (i = 0; i < len; i++) {
 		found = find_string(start, replace[i][0]);
-		if (found && (found < cursor || !cursor)) {
+		if (found && found < end && (found < cursor || !cursor)) {
 			cursor = found;
 			pos = i;
 		}
