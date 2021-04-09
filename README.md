@@ -10,9 +10,20 @@ name of the file to import.
 
 	{{/path/to/file_to_import}}
 
-you can also import data from stdin with:
+You can also import data from stdin with:
 
 	{{...}}
+
+You can mix both and dynamically change the file name to import,
+escaping the `{{` of the outer import:
+
+	\{{/path/to/{{...}}\}}
+
+after run **sfi**, the result will be:
+
+	{{/path/to/file_from_variable}}
+
+and **re-run sfi** to import that file.
 
 ## Usage
 	
